@@ -1,5 +1,6 @@
 #include "log.h"
 #include "SdManager.h"
+#include "network_integration.h"
 SdManager sd_manager;
 void setup(){
   Serial.begin(115200);
@@ -11,6 +12,9 @@ void setup(){
   sd_manager.loadConfiguration("/config.txt",config,configString);
   Logln(configString.c_str());
   printConfig(config);
+  Logf("(%s - %s)\n",config.wifi_ssid,config.wifi_password);
+  setupWifi("Wifi",config.wifi_ssid,config.wifi_password);
+  NTP::setupTime();
 }
 
 void loop(){
@@ -26,7 +30,7 @@ void loop(){
   
 
   static int counter = 0;
-  Logf("Looping (%i)\n",counter++);
+  Logf("Looping (%i) hora: %s\n",counter++,NTP::getFormattedTime().c_str());
   delay(4000);
 }
 
