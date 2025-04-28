@@ -33,7 +33,7 @@ int setupWifi(const char* contextName, const char* ssid, const char* password)
 
   // Aguarda conexão
   int attempts = 0;
-  while (WiFi.status() != WL_CONNECTED && attempts < 20) {
+  while (WiFi.status() != WL_CONNECTED && attempts < 40) {
     delay(500);
     Logf(".");
     attempts++;
@@ -55,8 +55,8 @@ namespace NTP{
 
 // 📌 1. Inicializa o NTP
 void setupTime() {
-  sntp_set_sync_interval(600000); // sincroniza a cada 10 minutos
   configTime(0, 0, ntpServer); // offset UTC e DST (pode ajustar depois)
+  sntp_set_sync_interval(600000); // sincroniza a cada 10 minutos
   Log("⏱️  Sincronização de tempo NTP iniciada.\n");
 }
 
@@ -68,7 +68,7 @@ String getFormattedTime() {
     strftime(buffer, sizeof(buffer), "%d/%m/%Y %H:%M:%S", &timeinfo);
     return String(buffer);
   }
-  return "⛔ Horário inválido";
+  return "Invalid";
 }
 
 // 📌 3. Retorna o timestamp atual (epoch time)

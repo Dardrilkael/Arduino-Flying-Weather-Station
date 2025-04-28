@@ -66,14 +66,14 @@ bool SdManager::storeMeasurement(const char* directory, const char* fileName, co
     // Check if file exists before writing
     if (!SD.exists(fullPath)) {
         // File doesn't exist, write header first
-        const char* header = "timestamp,value\n"; // Customize this based on your data format
+        const char* header = "timestamp,datetime,temperature,humidity,pressure,co2,ch4,co";; // Customize this based on your data format
         if (!appendToFile(fullPath.c_str(), header)) {
             Log("⚠️ Falha ao escrever o cabeçalho do arquivo.\n");
             return false;
         }
     }
 
-    return appendToFile(fullPath.c_str(), payload);
+    return appendToFile(fullPath.c_str(), (String(payload)+"\n").c_str());
 }
 
 bool SdManager::loadConfiguration(const char* path, Config &config, std::string& configJson) {
